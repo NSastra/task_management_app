@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 // import 'package:task_management_app/app/routes/app_pages.dart';
+// import 'package:task_management_app/app/routes/app_pages.dart';
 
+import '../../utils/widget/Header.dart';
 import '../../utils/widget/SideBar.dart';
 import '../controllers/home_controller.dart';
 
@@ -23,7 +25,17 @@ class HomeView extends GetView<HomeController> {
             ), //untuk sisi kiri
             Expanded(
               flex: 17,
-              child: Container(color: Colors.white),
+              child: Column(children: [
+                const Header(),
+                Expanded(
+                    child: Container(
+                        padding: const EdgeInsets.all(50),
+                        margin: const EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(50),
+                        )))
+              ]),
             ), //untuk sisi kanan
           ],
         ));
