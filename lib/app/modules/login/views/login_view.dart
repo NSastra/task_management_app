@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:task_management_app/app/modules/utils/style/AppColors.dart';
 import 'package:task_management_app/app/routes/app_pages.dart';
 
 import '../controllers/login_controller.dart';
@@ -10,7 +11,8 @@ class LoginView extends GetView<LoginController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.blue[100],
+      // backgroundColor: Colors.blue[100],
+      backgroundColor: AppColors.PrimaryBg,
       body: Container(
           margin: context.isPhone //pengaturan margin sesuai resolusi layar
               ? EdgeInsets.all(Get.width * 0.1)

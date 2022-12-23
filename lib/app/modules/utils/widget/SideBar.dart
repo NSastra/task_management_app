@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../routes/app_pages.dart';
+import '../style/AppColors.dart';
 
 class SideBar extends StatelessWidget {
   const SideBar({
@@ -14,7 +15,8 @@ class SideBar extends StatelessWidget {
       elevation: 0,
       child: Container(
         height: Get.height,
-        color: Colors.blue[100],
+        // color: Colors.blue[100],
+        color: AppColors.PrimaryBg,
         child: SingleChildScrollView(
           child: Column(mainAxisAlignment: MainAxisAlignment.start, children: [
             Container(
@@ -50,7 +52,8 @@ class SideBar extends StatelessWidget {
                           Get.currentRoute == "/home"
                               ? Icons.desktop_mac
                               : Icons.desktop_mac_outlined,
-                          color: Colors.grey,
+                          color: AppColors.PrimaryText,
+                          // color: Colors.grey;
                         ),
                       ),
                       const SizedBox(
@@ -59,8 +62,9 @@ class SideBar extends StatelessWidget {
                       const Text(
                         'Home',
                         style: TextStyle(
-                          color: Colors.grey,
-                          fontWeight: FontWeight.w700,
+                          color: AppColors.PrimaryText,
+                          // color: Colors.grey;
+                          fontWeight: FontWeight.w500,
                           fontSize: 16,
                         ),
                       ),
@@ -88,7 +92,8 @@ class SideBar extends StatelessWidget {
                           Get.currentRoute == '/task'
                               ? Icons.task
                               : Icons.task_outlined,
-                          color: Colors.grey,
+                          color: AppColors.PrimaryText,
+                          // color: Colors.grey;
                         ),
                       ),
                       const SizedBox(
@@ -97,8 +102,8 @@ class SideBar extends StatelessWidget {
                       const Text(
                         'Task',
                         style: TextStyle(
-                          color: Colors.grey,
-                          fontWeight: FontWeight.w700,
+                          color: AppColors.PrimaryText,
+                          fontWeight: FontWeight.w500,
                           fontSize: 16,
                         ),
                       ),
@@ -126,7 +131,7 @@ class SideBar extends StatelessWidget {
                           Get.currentRoute == '/friends'
                               ? Icons.group
                               : Icons.group_outlined,
-                          color: Colors.grey,
+                          color: AppColors.PrimaryText,
                         ),
                       ),
                       const SizedBox(
@@ -135,8 +140,9 @@ class SideBar extends StatelessWidget {
                       const Text(
                         'Friends',
                         style: TextStyle(
-                          color: Colors.grey,
-                          fontWeight: FontWeight.w700,
+                          color: AppColors.PrimaryText,
+                          // color: Colors.grey;
+                          fontWeight: FontWeight.w500,
                           fontSize: 16,
                         ),
                       ),
@@ -174,7 +180,7 @@ class SideBar extends StatelessWidget {
                         'Profile',
                         style: TextStyle(
                           color: Colors.grey,
-                          fontWeight: FontWeight.w700,
+                          fontWeight: FontWeight.w500,
                           fontSize: 16,
                         ),
                       ),
