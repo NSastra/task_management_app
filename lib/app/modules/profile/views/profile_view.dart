@@ -5,6 +5,8 @@ import 'package:get/get.dart';
 import '../../../routes/app_pages.dart';
 import '../../utils/style/AppColors.dart';
 import '../../utils/widget/Header.dart';
+import '../../utils/widget/MyTask.dart';
+import '../../utils/widget/Profile.dart';
 import '../../utils/widget/SideBar.dart';
 import '../controllers/profile_controller.dart';
 
@@ -115,33 +117,45 @@ class ProfileView extends GetView<ProfileController> {
                           const SizedBox(
                             width: 5,
                           ),
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(30),
-                            child: const CircleAvatar(
-                              backgroundColor: Colors.blueAccent,
-                              radius: 25,
-                              foregroundImage: NetworkImage(
-                                  'https://akcdn.detik.net.id/community/media/visual/2020/04/13/c85543ab-4961-4aea-8007-d4bee92a7ee0_43.jpeg?w=250&q='),
-                            ),
-                          )
+                          // ClipRRect(
+                          //   borderRadius: BorderRadius.circular(30),
+                          //   child: const CircleAvatar(
+                          //     backgroundColor: Colors.blueAccent,
+                          //     radius: 25,
+                          //     foregroundImage: NetworkImage(
+                          //         'https://akcdn.detik.net.id/community/media/visual/2020/04/13/c85543ab-4961-4aea-8007-d4bee92a7ee0_43.jpeg?w=250&q='),
+                          //   ),
+                          // )
                         ],
                       ),
                     ),
               Expanded(
                 child: Container(
-                  padding: const EdgeInsets.all(50),
-                  margin: !context.isPhone
-                      //menghilangkan margin jika resolusi <600px
-                      ? const EdgeInsets.all(10)
-                      : const EdgeInsets.all(0),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: !context.isPhone
-                        //mengecilkan lengkungan jika resoulusi <600px
-                        ? BorderRadius.circular(50)
-                        : BorderRadius.circular(30),
-                  ),
-                ),
+                    padding: !context.isPhone
+                        ? const EdgeInsets.all(10)
+                        : const EdgeInsets.all(10),
+                    margin: !context.isPhone
+                        //menghilangkan margin jika resolusi <600px
+                        ? const EdgeInsets.all(10)
+                        : const EdgeInsets.all(0),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: !context.isPhone
+                          //mengecilkan lengkungan jika resoulusi <600px
+                          ? BorderRadius.circular(30)
+                          : BorderRadius.circular(30),
+                    ),
+                    //isi konten utama halaman profile
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        const Profile(),
+                        SizedBox(
+                          height: Get.height * 0.4,
+                          child: const MyTask(),
+                        ),
+                      ],
+                    )),
               )
             ]),
           ), //untuk sisi kanan
