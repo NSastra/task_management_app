@@ -3,6 +3,7 @@
 import 'dart:html';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 
 import 'package:get/get.dart';
 import 'package:task_management_app/app/modules/utils/style/AppColors.dart';
@@ -11,6 +12,7 @@ import 'package:task_management_app/app/modules/utils/style/AppColors.dart';
 
 import '../../../routes/app_pages.dart';
 import '../../utils/widget/Header.dart';
+import '../../utils/widget/MyFriends.dart';
 import '../../utils/widget/MyTask.dart';
 import '../../utils/widget/SideBar.dart';
 import '../../utils/widget/UpcomingTask.dart';
@@ -161,46 +163,18 @@ class HomeView extends GetView<HomeController> {
                           //widget MyTask dan cardnya
                           child: const MyTask(),
                         ),
-                        Expanded(
-                          child: Row(
-                            children: [
-                              //widget yang berisi upcoming task dan cardnya
-                              const UpcomingTask(),
-                              Expanded(
-                                child: Column(
-                                  children: [
-                                    Row(
-                                      children: const [
-                                        Text(
-                                          'My Friends',
-                                          style: TextStyle(
-                                              color: AppColors.PrimaryText,
-                                              fontSize: 30),
-                                        ),
-                                        SizedBox(
-                                          width: 25,
-                                        ),
-                                        Text(
-                                          'More',
-                                          style: TextStyle(
-                                              color: AppColors.PrimaryText,
-                                              fontSize: 30),
-                                        ),
-                                        Icon(
-                                          Icons.navigate_next,
-                                          color: AppColors.PrimaryText,
-                                        ),
-                                      ],
-                                    ),
-                                    const SizedBox(
-                                      height: 20,
-                                    ),
+                        //context untuk menghilangkan grid foto ketika resolusi <600px
+                        !context.isPhone
+                            ? Expanded(
+                                child: Row(
+                                  children: const [
+                                    //widget yang berisi upcoming task dan cardnya
+                                    UpcomingTask(),
+                                    MyFriends(),
                                   ],
                                 ),
-                              ),
-                            ],
-                          ),
-                        ),
+                              )
+                            : const UpcomingTask(),
                       ],
                     ),
                   ),
