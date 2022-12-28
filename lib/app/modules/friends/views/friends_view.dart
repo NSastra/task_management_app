@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -5,6 +7,7 @@ import 'package:get/get.dart';
 import '../../../routes/app_pages.dart';
 import '../../utils/style/AppColors.dart';
 import '../../utils/widget/Header.dart';
+import '../../utils/widget/MyFriends.dart';
 import '../../utils/widget/SideBar.dart';
 import '../controllers/friends_controller.dart';
 
@@ -129,7 +132,9 @@ class FriendsView extends GetView<FriendsController> {
                     ),
               Expanded(
                 child: Container(
-                  padding: const EdgeInsets.all(50),
+                  padding: !context.isPhone
+                      ? const EdgeInsets.all(30)
+                      : const EdgeInsets.all(20),
                   margin: !context.isPhone
                       //menghilangkan margin jika resolusi <600px
                       ? const EdgeInsets.all(10)
@@ -138,8 +143,83 @@ class FriendsView extends GetView<FriendsController> {
                     color: Colors.white,
                     borderRadius: !context.isPhone
                         //mengecilkan lengkungan jika resoulusi <600px
-                        ? BorderRadius.circular(50)
+                        ? BorderRadius.circular(30)
                         : BorderRadius.circular(30),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        'People You May Know',
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w200,
+                          color: AppColors.PrimaryText,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 200,
+                        child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          //untuk fungsi scroll pada card, bisa horizontal ataupun vertical
+                          shrinkWrap: true,
+                          itemCount: 6,
+                          clipBehavior: Clip.antiAlias,
+                          itemBuilder: (context, index) {
+                            return Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Stack(
+                                children: [
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.circular(50),
+                                    child: const Image(
+                                      image: NetworkImage(
+                                          'https://akcdn.detik.net.id/community/media/visual/2020/04/13/c85543ab-4961-4aea-8007-d4bee92a7ee0_43.jpeg?w=250&q='),
+                                    ),
+                                  ),
+                                  const Positioned(
+                                    bottom: 10,
+                                    left: 70,
+                                    child: Text(
+                                      'Shania Gracia',
+                                      style: TextStyle(
+                                        color: AppColors.PrimaryText,
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                  ),
+                                  Positioned(
+                                    bottom: 1,
+                                    right: 0,
+                                    child: SizedBox(
+                                      height: 36,
+                                      width: 36,
+                                      child: ElevatedButton(
+                                        onPressed: () {},
+                                        style: ElevatedButton.styleFrom(
+                                          padding: const EdgeInsets.all(0.0),
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(30),
+                                          ),
+                                        ),
+                                        child: const Icon(
+                                            Icons.add_reaction_sharp),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 15,
+                      ),
+                      const MyFriends(),
+                    ],
                   ),
                 ),
               )

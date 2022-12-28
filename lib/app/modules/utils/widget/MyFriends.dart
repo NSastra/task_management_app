@@ -20,15 +20,22 @@ class MyFriends extends StatelessWidget {
               children: [
                 const Text(
                   'My Friends',
-                  style: TextStyle(color: AppColors.PrimaryText, fontSize: 30),
+                  style: TextStyle(
+                    color: AppColors.PrimaryText,
+                    fontSize: 30,
+                    fontWeight: FontWeight.w200,
+                  ),
                 ),
                 const Spacer(),
                 GestureDetector(
                   onTap: () => Get.toNamed(Routes.FRIENDS),
                   child: const Text(
                     'More',
-                    style:
-                        TextStyle(color: AppColors.PrimaryText, fontSize: 20),
+                    style: TextStyle(
+                      color: AppColors.PrimaryText,
+                      fontSize: 20,
+                      fontWeight: FontWeight.w200,
+                    ),
                   ),
                 ),
                 const Icon(
@@ -45,17 +52,17 @@ class MyFriends extends StatelessWidget {
               child: GridView.builder(
                   shrinkWrap: true,
                   itemCount: 8,
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 3,
-                      crossAxisSpacing: 20,
-                      mainAxisSpacing: 20),
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: !context.isPhone ? 3 : 2,
+                      crossAxisSpacing: 5,
+                      mainAxisSpacing: 5),
                   itemBuilder: (context, index) {
                     return Padding(
                       padding: const EdgeInsets.all(20.0),
                       child: Column(
                         children: [
                           ClipRRect(
-                            borderRadius: BorderRadius.circular(10),
+                            borderRadius: BorderRadius.circular(30),
                             child: const Image(
                               image: NetworkImage(
                                   'https://akcdn.detik.net.id/community/media/visual/2020/04/13/c85543ab-4961-4aea-8007-d4bee92a7ee0_43.jpeg?w=250&q='),
