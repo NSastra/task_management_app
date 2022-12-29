@@ -1,3 +1,5 @@
+import 'dart:html';
+
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -129,7 +131,9 @@ class TaskView extends GetView<TaskController> {
                     ),
               Expanded(
                 child: Container(
-                  padding: const EdgeInsets.all(50),
+                  padding: !context.isPhone
+                      ? const EdgeInsets.all(30)
+                      : const EdgeInsets.all(20),
                   margin: !context.isPhone
                       //menghilangkan margin jika resolusi <600px
                       ? const EdgeInsets.all(10)
@@ -138,14 +142,135 @@ class TaskView extends GetView<TaskController> {
                     color: Colors.white,
                     borderRadius: !context.isPhone
                         //mengecilkan lengkungan jika resoulusi <600px
-                        ? BorderRadius.circular(50)
+                        ? BorderRadius.circular(30)
                         : BorderRadius.circular(30),
                   ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        'My Task',
+                        style: TextStyle(
+                          color: AppColors.PrimaryText,
+                          fontSize: 30,
+                          fontWeight: FontWeight.w200,
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      Expanded(
+                        child: ListView.builder(
+                          itemCount: 6,
+                          clipBehavior: Clip.antiAlias,
+                          scrollDirection: Axis.vertical,
+                          shrinkWrap: true,
+                          itemBuilder: (context, index) {
+                            return Container(
+                              height: 200,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(20),
+                                  color: Colors.grey[350]),
+                              margin: const EdgeInsets.all(10),
+                              padding: const EdgeInsets.all(20),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    children: [
+                                      ClipRRect(
+                                        borderRadius: BorderRadius.circular(25),
+                                        child: const CircleAvatar(
+                                          backgroundColor: Colors.blueAccent,
+                                          radius: 20,
+                                          foregroundImage: NetworkImage(
+                                              'https://akcdn.detik.net.id/community/media/visual/2020/04/13/c85543ab-4961-4aea-8007-d4bee92a7ee0_43.jpeg?w=250&q='),
+                                        ),
+                                      ),
+                                      ClipRRect(
+                                        borderRadius: BorderRadius.circular(25),
+                                        child: const CircleAvatar(
+                                          backgroundColor: Colors.blueAccent,
+                                          radius: 20,
+                                          foregroundImage: NetworkImage(
+                                              'https://akcdn.detik.net.id/community/media/visual/2020/04/13/c85543ab-4961-4aea-8007-d4bee92a7ee0_43.jpeg?w=250&q='),
+                                        ),
+                                      ),
+                                      const Spacer(),
+                                      Container(
+                                        height: 25,
+                                        width: 80,
+                                        color: AppColors.PrimaryBg,
+                                        child: const Center(
+                                          child: Text(
+                                            '100%',
+                                            style: TextStyle(
+                                                color: AppColors.PrimaryText),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  const Spacer(),
+                                  Container(
+                                    height: 15,
+                                    width: 150,
+                                    color: AppColors.PrimaryBg,
+                                    child: const Center(
+                                      child: Text(
+                                        '10/10 Task Completed',
+                                      ),
+                                    ),
+                                  ),
+                                  const Text(
+                                    'Pemrograman Flutter',
+                                    style: TextStyle(
+                                        color: AppColors.PrimaryText,
+                                        fontSize: 20),
+                                  ),
+                                  const Text(
+                                    'Deadline In 3 Days',
+                                    style: TextStyle(
+                                      color: AppColors.PrimaryText,
+                                      fontSize: 15,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-              )
+              ),
             ]),
           ), //untuk sisi kanan
         ],
+      ),
+      floatingActionButton: Align(
+        alignment: const Alignment(0.95, 0.95),
+        child: FloatingActionButton.extended(
+          onPressed: () {
+            Get.bottomSheet(Container(
+              //tinggi dari bottomsheet hanya bisa sampai 50% dari total tinggi
+              margin: context.isPhone
+                  ? EdgeInsets.zero
+                  : const EdgeInsets.only(left: 120, right: 120),
+              height: Get.height,
+              decoration: const BoxDecoration(
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(20),
+                  topRight: Radius.circular(20),
+                ),
+                color: Colors.white,
+              ),
+            ));
+          },
+          label: const Text('Add Task'),
+          icon: const Icon(Icons.add_circle_outline),
+        ),
       ),
     );
   }
