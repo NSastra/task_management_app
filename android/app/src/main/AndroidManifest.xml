@@ -3,7 +3,9 @@
    <application
         android:label="task_management_app"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/ic_launcher"
+        android:usesCleartextTraffic="true"
+        <!-- usescleartexttraffic dipertanyakan, apakah cukup dimanifest debug atau di sini juga> -->
         <activity
             android:name=".MainActivity"
             android:exported="true"
