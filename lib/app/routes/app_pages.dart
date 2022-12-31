@@ -28,7 +28,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.LOGIN,
-      page: () => const LoginView(),
+      page: () => LoginView(),
       binding: LoginBinding(),
       // transition: Transition.zoom,
       // transitionDuration: const Duration(seconds: 2),
