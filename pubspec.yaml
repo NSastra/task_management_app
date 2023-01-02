@@ -8,9 +8,10 @@ environment:
 dependencies: 
   cupertino_icons: ^1.0.2
   get: 4.6.5
-  firebase_core: 2.4.0
+  firebase_core: 2.4.1
   firebase_auth: 4.2.3
   google_sign_in: 5.4.2
+  cloud_firestore: 4.3.1
   flutter: 
     sdk: flutter
 

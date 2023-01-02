@@ -12,6 +12,7 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
+    name: "task management project",
   );
   Get.put(AuthController(), permanent: true);
   //permanent true ditulis agar controller dapat dipakai disemua page
