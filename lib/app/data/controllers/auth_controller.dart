@@ -85,20 +85,19 @@ class AuthController extends GetxController {
         'name': googleUser.displayName,
         'lastLoginAt':
             _userCredential!.user!.metadata.lastSignInTime.toString(),
+      }).then((value) {
+        String temp = '';
+        try {
+          for (var i = 0; i < googleUser.displayName!.length; i++) {
+            temp = temp + googleUser.displayName![i];
+            users.doc(googleUser.email).set({
+              'list_cari': FieldValue.arrayUnion([temp.toUpperCase()])
+            }, SetOptions(merge: true));
+          }
+        } catch (e) {
+          print(e);
+        }
       });
-      // .then((value) {
-      //   String temp = '';
-      //   try {
-      //     for (var i = 0; i < googleUser.displayName!.length; i++) {
-      //       temp = temp + googleUser.displayName![i];
-      //       users.doc(googleUser.email).set({
-      //         'list_cari': FieldValue.arrayUnion([temp.toUpperCase()])
-      //       }, SetOptions(merge: true));
-      //     }
-      //   } catch (e) {
-      //     print(e);
-      //   }
-      // });
       //pengambilan then.value pada else dilakukan agar list_cari selalu masuk ke firestore walaupun data user sudah ada sebelumnya
     }
     Get.offAllNamed(Routes.HOME);
