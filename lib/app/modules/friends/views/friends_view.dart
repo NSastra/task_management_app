@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import '../../../data/controllers/auth_controller.dart';
 import '../../../routes/app_pages.dart';
 import '../../utils/style/AppColors.dart';
+import '../../utils/widget/FriendsSuggestions.dart';
 import '../../utils/widget/Header.dart';
 import '../../utils/widget/MyFriends.dart';
 import '../../utils/widget/SideBar.dart';
@@ -200,74 +201,11 @@ class FriendsView extends GetView<FriendsController> {
                                     color: AppColors.PrimaryText,
                                   ),
                                 ),
-                                SizedBox(
-                                  height: 200,
-                                  child: ListView.builder(
-                                    scrollDirection: Axis.horizontal,
-                                    //untuk fungsi scroll pada card, bisa horizontal ataupun vertical
-                                    shrinkWrap: true,
-                                    itemCount: 6,
-                                    clipBehavior: Clip.antiAlias,
-                                    itemBuilder: (context, index) {
-                                      return Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Stack(
-                                          children: [
-                                            ClipRRect(
-                                              borderRadius:
-                                                  BorderRadius.circular(50),
-                                              child: const Image(
-                                                image: NetworkImage(
-                                                    'https://akcdn.detik.net.id/community/media/visual/2020/04/13/c85543ab-4961-4aea-8007-d4bee92a7ee0_43.jpeg?w=250&q='),
-                                              ),
-                                            ),
-                                            const Positioned(
-                                              bottom: 10,
-                                              left: 70,
-                                              child: Text(
-                                                'Shania Gracia',
-                                                style: TextStyle(
-                                                  color: AppColors.PrimaryText,
-                                                  fontSize: 15,
-                                                  fontWeight: FontWeight.w500,
-                                                ),
-                                              ),
-                                            ),
-                                            Positioned(
-                                              bottom: 1,
-                                              right: 0,
-                                              child: SizedBox(
-                                                height: 36,
-                                                width: 36,
-                                                child: ElevatedButton(
-                                                  onPressed: () {},
-                                                  style:
-                                                      ElevatedButton.styleFrom(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            0.0),
-                                                    shape:
-                                                        RoundedRectangleBorder(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              30),
-                                                    ),
-                                                  ),
-                                                  child: const Icon(
-                                                      Icons.add_reaction_sharp),
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      );
-                                    },
-                                  ),
-                                ),
+                                FriendsSuggestions(),
                                 const SizedBox(
                                   height: 15,
                                 ),
-                                const MyFriends(),
+                                MyFriends(),
                               ],
                             )
                           : ListView.builder(
@@ -275,6 +213,8 @@ class FriendsView extends GetView<FriendsController> {
                               shrinkWrap: true,
                               itemCount: authC.hasilCari.length,
                               itemBuilder: (context, index) => ListTile(
+                                onTap: () => authC.addFriends(
+                                    authC.hasilCari[index]['email']),
                                 leading: ClipRRect(
                                   borderRadius: BorderRadius.circular(50),
                                   child: Image(

@@ -10,6 +10,7 @@ import '../../routes/app_pages.dart';
 
 class AuthController extends GetxController {
   FirebaseFirestore firestore = FirebaseFirestore.instance;
+  FirebaseAuth auth = FirebaseAuth.instance;
   UserCredential? _userCredential;
   // Future<UserCredential> signInWithGoogle() async {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -49,7 +50,8 @@ class AuthController extends GetxController {
     print(googleUser!.email);
 
     // Once signed in, return the UserCredential
-    await FirebaseAuth.instance
+    await auth
+        //auth sudah dideklarasikan sebagai FirebaseAuth.instance
         .signInWithCredential(credential)
         // .then((value) => Get.offAllNamed(Routes.HOME));
         .then((value) => _userCredential = value);
@@ -82,6 +84,7 @@ class AuthController extends GetxController {
       });
     } else {
       users.doc(googleUser.email).set({
+        //jika di firestore data tidak urut, ganti set dengan update
         'name': googleUser.displayName,
         'lastLoginAt':
             _userCredential!.user!.metadata.lastSignInTime.toString(),
@@ -127,6 +130,7 @@ class AuthController extends GetxController {
       }
 
       if (kataCari.isNotEmpty) {
+        hasilCari.value = [];
         kataCari.forEach((element) {
           print(element);
           hasilCari.add(element);
@@ -141,4 +145,45 @@ class AuthController extends GetxController {
     kataCari.refresh();
     hasilCari.refresh();
   }
+
+  void addFriends(String _emailFriends) async {
+    //friends di bawah akan menjadi nama collection di dalam firestore database
+    CollectionReference friends = firestore.collection('friends');
+
+    final checkFriends = await friends.doc(auth.currentUser!.email).get();
+    //checkFriends untuk cek ada data atau tidak
+
+    if (checkFriends.data() == null) {
+      await friends.doc(auth.currentUser!.email).set({
+        'emailMe': auth.currentUser!.email,
+        'emailFriends': [_emailFriends],
+      }).whenComplete(
+          () => Get.snackbar("Friends", "Friends added with no problem"));
+    } else {
+      await friends.doc(auth.currentUser!.email).set({
+        'emailFriends': FieldValue.arrayUnion([_emailFriends]),
+      }, SetOptions(merge: true)).whenComplete(
+          () => Get.snackbar("Friends", "Friends added with no problem"));
+    }
+
+    hasilCari.clear();
+    searchFriendsController.clear();
+    Get.back();
+  }
+
+  Stream<DocumentSnapshot<Map<String, dynamic>>> streamFriends() {
+    return firestore
+        .collection('friends')
+        .doc(auth.currentUser!.email)
+        .snapshots();
+  }
+
+  Stream<DocumentSnapshot<Map<String, dynamic>>> streamUsers(String email) {
+    return firestore.collection('users').doc(email).snapshots();
+  }
+
+  // Future<QuerySnapshot<Map<String, dynamic>>> getPeople() async {
+  //   CollectionReference users = firestore.collection('users');
+  //   return;
+  // }
 }

@@ -170,9 +170,9 @@ class HomeView extends GetView<HomeController> {
                         !context.isPhone
                             ? Expanded(
                                 child: Row(
-                                  children: const [
+                                  children: [
                                     //widget yang berisi upcoming task dan cardnya
-                                    UpcomingTask(),
+                                    const UpcomingTask(),
                                     MyFriends(),
                                   ],
                                 ),
