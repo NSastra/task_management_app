@@ -83,7 +83,7 @@ class AuthController extends GetxController {
         }
       });
     } else {
-      users.doc(googleUser.email).set({
+      users.doc(googleUser.email).update({
         //jika di firestore data tidak urut, ganti set dengan update
         'name': googleUser.displayName,
         'lastLoginAt':
@@ -182,8 +182,19 @@ class AuthController extends GetxController {
     return firestore.collection('users').doc(email).snapshots();
   }
 
-  // Future<QuerySnapshot<Map<String, dynamic>>> getPeople() async {
-  //   CollectionReference users = firestore.collection('users');
-  //   return;
-  // }
+  Future<QuerySnapshot<Map<String, dynamic>>> getPeople() async {
+    CollectionReference friendsCollect = firestore.collection('friends');
+    final checkFriends =
+        await friendsCollect.doc(auth.currentUser!.email).get();
+    //checkFriends digunakan untuk mengecek di dalam collection friends ada emailFriends siapa saja
+    var listFriends =
+        (checkFriends.data() as Map<String, dynamic>)['emailFriends'] as List;
+    //dari hasil checkFriends akan diambil isi dari atribut emailFriends dan diubah menjadi List
+    var hasil = await firestore
+        //var dapat diganti dengan QuerySnapshot<Map<String, dynamic>>
+        .collection('users')
+        .where('email', whereNotIn: listFriends)
+        .get();
+    return hasil;
+  }
 }

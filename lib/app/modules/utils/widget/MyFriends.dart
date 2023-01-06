@@ -90,6 +90,9 @@ class MyFriends extends StatelessWidget {
                                     borderRadius: BorderRadius.circular(30),
                                     child: Image(
                                       image: NetworkImage(data!['photo']),
+                                      height: Get.width * 0.35,
+                                      width: Get.width * 0.4,
+                                      fit: BoxFit.cover,
                                     ),
                                   ),
                                   // ClipRRect(
