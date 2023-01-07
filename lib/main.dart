@@ -28,6 +28,7 @@ Future<void> main() async {
         title: "Application",
         // initialRoute: AppPages.INITIAL,
         initialRoute: snapshot.data != null ? Routes.HOME : Routes.LOGIN,
+        //routing - mengarahkan ke home jika sudah login
         getPages: AppPages.routes,
       );
     },
