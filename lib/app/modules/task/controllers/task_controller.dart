@@ -67,6 +67,9 @@ class TaskController extends GetxController {
         await usersCollection.doc(authC.auth.currentUser!.email).set({
           'taskId': FieldValue.arrayUnion([taskId])
         }, SetOptions(merge: true));
+        await taskCollection.doc(authC.auth.currentUser!.email).set({
+          'taskId': FieldValue.arrayUnion([taskId])
+        }, SetOptions(merge: true));
         //task_id digunakan untuk membuat list seperti list_cari di dalam collection firestore
         Get.back();
         Get.snackbar('Task', 'Success to $type task');
@@ -80,7 +83,10 @@ class TaskController extends GetxController {
         'description': description,
         'due_date': dueDate,
       }).whenComplete(() async {
-        await usersCollection.doc(authC.auth.currentUser!.email).set({
+        // await usersCollection.doc(authC.auth.currentUser!.email).set({
+        //   'taskId': FieldValue.arrayUnion([taskId])
+        // }, SetOptions(merge: true));
+        await taskCollection.doc(authC.auth.currentUser!.email).set({
           'taskId': FieldValue.arrayUnion([taskId])
         }, SetOptions(merge: true));
         //task_id digunakan untuk membuat list seperti list_cari di dalam collection firestore
@@ -90,5 +96,20 @@ class TaskController extends GetxController {
         Get.snackbar('Task', 'Failed to $type task');
       });
     }
+
+    // await taskCollection pada kondisi pertama if dan else tidak ditunjukan pada tutorial, ini dilakukan secara mandiri karena ada error, kemungkinan harus dihapus kembali ke depannya
+  }
+
+  void deleteTask(String taskId) async {
+    CollectionReference taskCollection = firestore.collection('task');
+    CollectionReference usersCollection = firestore.collection('users');
+
+    await taskCollection.doc(taskId).delete().whenComplete(() async {
+      await usersCollection.doc(auth.currentUser!.email).set({
+        'taskId': FieldValue.arrayRemove([taskId])
+      }, SetOptions(merge: true));
+      Get.back();
+      Get.snackbar('Task', 'Successfully deleted');
+    });
   }
 }

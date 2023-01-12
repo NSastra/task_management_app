@@ -1,5 +1,6 @@
 import 'dart:html';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/material.dart';
 
@@ -164,102 +165,244 @@ class TaskView extends GetView<TaskController> {
                           height: 20,
                         ),
                         Expanded(
-                          child: ListView.builder(
-                            itemCount: 6,
-                            clipBehavior: Clip.antiAlias,
-                            scrollDirection: Axis.vertical,
-                            shrinkWrap: true,
-                            itemBuilder: (context, index) {
-                              return GestureDetector(
-                                onLongPress: () {
-                                  createUpdateTask(
-                                    context: context,
-                                    type: 'Update',
-                                    docId:
-                                        'pakai-task_id-dari-collection-users',
+                          //stream user untuk mengambil data task list dari firestore
+                          child: StreamBuilder<
+                                  DocumentSnapshot<Map<String, dynamic>>>(
+                              stream: authC
+                                  .streamUsers(authC.auth.currentUser!.email!),
+                              builder: (context, snapshot) {
+                                if (snapshot.connectionState ==
+                                    ConnectionState.waiting) {
+                                  return const Center(
+                                    child: CircularProgressIndicator(),
                                   );
-                                },
-                                child: Container(
-                                  height: 200,
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(20),
-                                      color: Colors.grey[350]),
-                                  margin: const EdgeInsets.all(10),
-                                  padding: const EdgeInsets.all(20),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Row(
-                                        children: [
-                                          ClipRRect(
-                                            borderRadius:
-                                                BorderRadius.circular(25),
-                                            child: const CircleAvatar(
-                                              backgroundColor:
-                                                  Colors.blueAccent,
-                                              radius: 20,
-                                              foregroundImage: NetworkImage(
-                                                  'https://akcdn.detik.net.id/community/media/visual/2020/04/13/c85543ab-4961-4aea-8007-d4bee92a7ee0_43.jpeg?w=250&q='),
-                                            ),
-                                          ),
-                                          ClipRRect(
-                                            borderRadius:
-                                                BorderRadius.circular(25),
-                                            child: const CircleAvatar(
-                                              backgroundColor:
-                                                  Colors.blueAccent,
-                                              radius: 20,
-                                              foregroundImage: NetworkImage(
-                                                  'https://akcdn.detik.net.id/community/media/visual/2020/04/13/c85543ab-4961-4aea-8007-d4bee92a7ee0_43.jpeg?w=250&q='),
-                                            ),
-                                          ),
-                                          const Spacer(),
-                                          Container(
-                                            height: 25,
-                                            width: 80,
-                                            color: AppColors.PrimaryBg,
-                                            child: const Center(
-                                              child: Text(
-                                                '100%',
-                                                style: TextStyle(
-                                                    color:
-                                                        AppColors.PrimaryText),
+                                }
+                                //mengambil taskId dari collection
+                                var taskId = (snapshot.data!.data()
+                                    as Map<String, dynamic>)['taskId'] as List;
+                                //pertama streamUsers digunakan untuk mengambil user yg login, kemudian dari user tersebut akan diambil taskId
+                                return ListView.builder(
+                                  // itemCount: 6,
+                                  itemCount: taskId.length,
+                                  //itemCount diambil dari hasil List taskId di atas
+                                  clipBehavior: Clip.antiAlias,
+                                  scrollDirection: Axis.vertical,
+                                  shrinkWrap: true,
+                                  itemBuilder: (context, index) {
+                                    return StreamBuilder<
+                                            DocumentSnapshot<
+                                                Map<String, dynamic>>>(
+                                        stream:
+                                            authC.streamTasks(taskId[index]),
+                                        //stream mengambil dari var taskId
+                                        builder: (context, snapshot2) {
+                                          if (snapshot2.connectionState ==
+                                              ConnectionState.waiting) {
+                                            return const Center(
+                                              child:
+                                                  CircularProgressIndicator(),
+                                            );
+                                          }
+                                          //untuk mengambil data task
+                                          //dataTask berisi data di dalam collection task (bagian field)
+                                          var dataTask = snapshot2.data!.data();
+                                          //untuk mengisi user photo (sesuai dengan asign to)
+                                          var dataUserList =
+                                              (snapshot2.data!.data() as Map<
+                                                  String,
+                                                  dynamic>)['asign_to'] as List;
+                                          return GestureDetector(
+                                            onLongPress: () {
+                                              Get.defaultDialog(
+                                                  title: dataTask!['title'],
+                                                  content: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      TextButton.icon(
+                                                        onPressed: () {
+                                                          Get.back();
+                                                          controller
+                                                                  .titleController
+                                                                  .text =
+                                                              dataTask['title'];
+                                                          controller
+                                                                  .descriptionController
+                                                                  .text =
+                                                              dataTask[
+                                                                  'description'];
+                                                          controller
+                                                                  .dueDateController
+                                                                  .text =
+                                                              dataTask[
+                                                                  'due_date'];
+                                                          createUpdateTask(
+                                                            context: context,
+                                                            type: 'Update',
+                                                            docId:
+                                                                taskId[index],
+                                                            //pakai taskId dari collection users di firestore
+                                                          );
+                                                        },
+                                                        icon: const Icon(
+                                                            Icons.edit),
+                                                        label: const Text(
+                                                            'Update'),
+                                                      ),
+                                                      TextButton.icon(
+                                                        onPressed: () {
+                                                          controller.deleteTask(
+                                                              taskId[index]);
+                                                        },
+                                                        icon: const Icon(
+                                                            Icons.delete),
+                                                        label: const Text(
+                                                            'Delete'),
+                                                      ),
+                                                    ],
+                                                  ));
+                                              // createUpdateTask(
+                                              //   context: context,
+                                              //   type: 'Update',
+                                              //   docId:
+                                              //       '2023-01-07T13:21:14.971',
+                                              //   //pakai taskId dari collection users di firestore
+                                              // );
+                                            },
+                                            child: Container(
+                                              height: 200,
+                                              decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(20),
+                                                  color: Colors.grey[350]),
+                                              margin: const EdgeInsets.all(10),
+                                              padding: const EdgeInsets.all(20),
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Row(
+                                                    children: [
+                                                      SizedBox(
+                                                        height: 50,
+                                                        child: Expanded(
+                                                          child:
+                                                              ListView.builder(
+                                                            padding:
+                                                                EdgeInsets.zero,
+                                                            itemCount:
+                                                                dataUserList
+                                                                    .length,
+                                                            scrollDirection:
+                                                                Axis.horizontal,
+                                                            shrinkWrap: true,
+                                                            physics:
+                                                                const ScrollPhysics(),
+                                                            itemBuilder:
+                                                                //index2 di dalam itemBuilder adalah variabel yang dapat diberi nama apa saja
+                                                                (context,
+                                                                    index2) {
+                                                              return StreamBuilder<
+                                                                      DocumentSnapshot<
+                                                                          Map<String,
+                                                                              dynamic>>>(
+                                                                  stream: authC
+                                                                      .streamUsers(
+                                                                          dataUserList[
+                                                                              index2]),
+                                                                  builder: (context,
+                                                                      snapshot3) {
+                                                                    if (snapshot3
+                                                                            .connectionState ==
+                                                                        ConnectionState
+                                                                            .waiting) {
+                                                                      return const Center(
+                                                                          child:
+                                                                              CircularProgressIndicator());
+                                                                    }
+                                                                    //ambil data user photo
+                                                                    var dataUserPhoto =
+                                                                        snapshot3
+                                                                            .data!
+                                                                            .data();
+                                                                    return ClipRRect(
+                                                                      borderRadius:
+                                                                          BorderRadius.circular(
+                                                                              25),
+                                                                      child:
+                                                                          CircleAvatar(
+                                                                        backgroundColor:
+                                                                            Colors.blueAccent,
+                                                                        radius:
+                                                                            20,
+                                                                        foregroundImage:
+                                                                            // NetworkImage('https://akcdn.detik.net.id/community/media/visual/2020/04/13/c85543ab-4961-4aea-8007-d4bee92a7ee0_43.jpeg?w=250&q='),
+                                                                            NetworkImage(dataUserPhoto!['photo']),
+                                                                      ),
+                                                                    );
+                                                                  });
+                                                            },
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      const Spacer(),
+                                                      Container(
+                                                        height: 25,
+                                                        width: 80,
+                                                        color:
+                                                            AppColors.PrimaryBg,
+                                                        child: Center(
+                                                          child: Text(
+                                                            '${dataTask!['status']} %',
+                                                            // '0%',
+                                                            style: const TextStyle(
+                                                                color: AppColors
+                                                                    .PrimaryText),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  const Spacer(),
+                                                  Container(
+                                                    height: 15,
+                                                    width: 150,
+                                                    color: AppColors.PrimaryBg,
+                                                    child: Center(
+                                                      child: Text(
+                                                        // '0/3 Task Completed',
+                                                        '${dataTask['total_task_finished']} / ${dataTask['total_task']} Task Completed',
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  Text(
+                                                    dataTask['title'],
+                                                    // 'Flutter Programming',
+                                                    // dataTask['title'],
+                                                    style: const TextStyle(
+                                                        color: AppColors
+                                                            .PrimaryText,
+                                                        fontSize: 20),
+                                                  ),
+                                                  Text(
+                                                    dataTask['description'],
+                                                    // 'Deadline in 3 days',
+                                                    // '${dataTask['descriptions']} - Due to ${dataTask['due_date']}',
+                                                    style: const TextStyle(
+                                                      color:
+                                                          AppColors.PrimaryText,
+                                                      fontSize: 15,
+                                                    ),
+                                                  ),
+                                                ],
                                               ),
                                             ),
-                                          ),
-                                        ],
-                                      ),
-                                      const Spacer(),
-                                      Container(
-                                        height: 15,
-                                        width: 150,
-                                        color: AppColors.PrimaryBg,
-                                        child: const Center(
-                                          child: Text(
-                                            '10/10 Task Completed',
-                                          ),
-                                        ),
-                                      ),
-                                      const Text(
-                                        'Pemrograman Flutter',
-                                        style: TextStyle(
-                                            color: AppColors.PrimaryText,
-                                            fontSize: 20),
-                                      ),
-                                      const Text(
-                                        'Deadline In 3 Days',
-                                        style: TextStyle(
-                                          color: AppColors.PrimaryText,
-                                          fontSize: 15,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              );
-                            },
-                          ),
+                                          );
+                                        });
+                                  },
+                                );
+                              }),
                         ),
                       ],
                     ),
@@ -306,7 +449,7 @@ class TaskView extends GetView<TaskController> {
           ),
           child: Form(
             key: controller.formKey,
-            autovalidateMode: AutovalidateMode.onUserInteraction,
+            autovalidateMode: AutovalidateMode.always,
             child: Column(children: [
               Text(
                 '$type Task',
