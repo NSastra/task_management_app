@@ -21,7 +21,7 @@ class MyFriends extends StatelessWidget {
                   'My Friends',
                   style: TextStyle(
                     // color: AppColors.PrimaryText,
-                    fontSize: 20,
+                    fontSize: 30,
                     fontWeight: FontWeight.w200,
                   ),
                 ),
@@ -90,8 +90,8 @@ class MyFriends extends StatelessWidget {
                                     borderRadius: BorderRadius.circular(30),
                                     child: Image(
                                       image: NetworkImage(data!['photo']),
-                                      height: context.isPhone ? 100 : 150,
-                                      width: context.isPhone ? 100 : 150,
+                                      height: context.isPhone ? 100 : 100,
+                                      width: context.isPhone ? 100 : 100,
                                       fit: BoxFit.cover,
                                     ),
                                   ),

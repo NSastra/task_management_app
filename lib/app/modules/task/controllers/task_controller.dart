@@ -31,6 +31,7 @@ class TaskController extends GetxController {
   @override
   void onClose() {
     super.onClose();
+
     titleController.dispose();
     descriptionController.dispose();
     dueDateController.dispose();
@@ -103,7 +104,6 @@ class TaskController extends GetxController {
   void deleteTask(String taskId) async {
     CollectionReference taskCollection = firestore.collection('task');
     CollectionReference usersCollection = firestore.collection('users');
-
     await taskCollection.doc(taskId).delete().whenComplete(() async {
       await usersCollection.doc(auth.currentUser!.email).set({
         'taskId': FieldValue.arrayRemove([taskId])

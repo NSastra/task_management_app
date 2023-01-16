@@ -7,6 +7,7 @@ import 'package:flutter/rendering.dart';
 
 import 'package:get/get.dart';
 import 'package:task_management_app/app/modules/utils/style/AppColors.dart';
+import 'package:task_management_app/app/modules/utils/widget/FriendsSuggestions.dart';
 // import 'package:task_management_app/app/routes/app_pages.dart';
 // import 'package:task_management_app/app/routes/app_pages.dart';
 
@@ -159,19 +160,34 @@ class HomeView extends GetView<HomeController> {
                           : BorderRadius.circular(30),
                     ),
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                      // crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        // const Text('Welcome To The Task Management App',
+                        //     style: TextStyle(
+                        //       fontSize: 27,
+                        //       color: AppColors.PrimaryText,
+                        //     )),
+                        const SizedBox(
+                          height: 5,
+                        ),
                         SizedBox(
                           height: Get.height * 0.4,
                           //widget MyTask dan cardnya
-                          child: const MyTask(),
+                          // child: FriendsSuggestions(),
+                          child: Image.asset(
+                            context.isPhone
+                                ? 'assets/images/wide-todolist.jpg'
+                                : 'assets/images/list.jpg',
+                            width: Get.width,
+                            height: Get.height * 0.3,
+                          ),
                         ),
                         //context untuk menghilangkan grid foto ketika resolusi <600px
                         !context.isPhone
                             ? Expanded(
                                 child: Row(
                                   children: [
-                                    //widget yang berisi upcoming task dan cardnya
+                                    // widget yang berisi upcoming task dan cardnya
                                     const UpcomingTask(),
                                     MyFriends(),
                                   ],

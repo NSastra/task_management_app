@@ -67,9 +67,10 @@ class LoginView extends GetView<LoginController> {
                 child: Container(
                   decoration: const BoxDecoration(
                     borderRadius: BorderRadius.only(
-                        topRight: Radius.circular(50),
-                        topLeft: Radius.circular(50),
-                        bottomRight: Radius.circular(50)),
+                        topRight: Radius.circular(30),
+                        topLeft: Radius.circular(30),
+                        bottomRight: Radius.circular(30),
+                        bottomLeft: Radius.circular(30)),
                     color: Colors.white,
                   ),
                   child: Column(

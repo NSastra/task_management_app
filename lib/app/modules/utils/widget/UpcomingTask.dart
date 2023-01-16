@@ -16,7 +16,11 @@ class UpcomingTask extends StatelessWidget {
           children: [
             const Text(
               'Upcoming Task',
-              style: TextStyle(color: AppColors.PrimaryText, fontSize: 30),
+              style: TextStyle(
+                color: AppColors.PrimaryText,
+                fontSize: 30,
+                fontWeight: FontWeight.w200,
+              ),
             ),
             const SizedBox(
               height: 10,

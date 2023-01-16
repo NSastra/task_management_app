@@ -24,6 +24,6 @@ dev_dependencies:
 flutter: 
   assets: 
     - assets/images/
+    - assets/images/ToDoList.png
     - assets/icons/
   uses-material-design: true
-

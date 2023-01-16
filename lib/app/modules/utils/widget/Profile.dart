@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../data/controllers/auth_controller.dart';
 import '../style/AppColors.dart';
 
 class Profile extends StatelessWidget {
-  const Profile({
-    Key? key,
-  }) : super(key: key);
+  final authC = Get.find<AuthController>();
 
   @override
   Widget build(BuildContext context) {
@@ -14,14 +13,14 @@ class Profile extends StatelessWidget {
       child: !context.isPhone
           ? Row(
               children: [
-                const Expanded(
+                Expanded(
                   flex: 1,
                   child: ClipRRect(
                     child: CircleAvatar(
                       backgroundColor: Colors.blueAccent,
-                      radius: 150,
-                      foregroundImage: NetworkImage(
-                          'https://akcdn.detik.net.id/community/media/visual/2020/04/13/c85543ab-4961-4aea-8007-d4bee92a7ee0_43.jpeg?w=250&q='),
+                      radius: 200,
+                      foregroundImage:
+                          NetworkImage(authC.auth.currentUser!.photoURL!),
                     ),
                   ),
                 ),
@@ -33,17 +32,17 @@ class Profile extends StatelessWidget {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
+                    children: [
                       Text(
-                        'Shania Gracia',
-                        style: TextStyle(
+                        authC.auth.currentUser!.displayName!,
+                        style: const TextStyle(
                           color: AppColors.PrimaryText,
                           fontSize: 50,
                         ),
                       ),
                       Text(
-                        'shaniagracia@gmail.com',
-                        style: TextStyle(
+                        authC.auth.currentUser!.email!,
+                        style: const TextStyle(
                           color: AppColors.PrimaryText,
                           fontSize: 20,
                         ),
@@ -56,12 +55,12 @@ class Profile extends StatelessWidget {
           : Center(
               child: Column(
                 children: [
-                  const ClipRRect(
+                  ClipRRect(
                     child: CircleAvatar(
                       backgroundColor: Colors.blueAccent,
                       radius: 75,
-                      foregroundImage: NetworkImage(
-                          'https://akcdn.detik.net.id/community/media/visual/2020/04/13/c85543ab-4961-4aea-8007-d4bee92a7ee0_43.jpeg?w=250&q='),
+                      foregroundImage:
+                          NetworkImage(authC.auth.currentUser!.photoURL!),
                     ),
                   ),
                   const SizedBox(
@@ -73,17 +72,17 @@ class Profile extends StatelessWidget {
                   Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
+                    children: [
                       Text(
-                        'Shania Gracia',
-                        style: TextStyle(
+                        authC.auth.currentUser!.displayName!,
+                        style: const TextStyle(
                           color: AppColors.PrimaryText,
-                          fontSize: 50,
+                          fontSize: 30,
                         ),
                       ),
                       Text(
-                        'shaniagracia@gmail.com',
-                        style: TextStyle(
+                        authC.auth.currentUser!.email!,
+                        style: const TextStyle(
                           color: AppColors.PrimaryText,
                           fontSize: 20,
                         ),
