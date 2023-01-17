@@ -151,10 +151,10 @@ class TaskView extends GetView<TaskController> {
                           : BorderRadius.circular(30),
                     ),
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                      // crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const Text(
-                          'My Task',
+                          'My Task(s)',
                           style: TextStyle(
                             color: AppColors.PrimaryText,
                             fontSize: 30,
